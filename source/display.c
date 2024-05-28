@@ -7,6 +7,8 @@
 
 #define LENGTH 3
 
+int judge_cnt = 0;
+
 int count_a_win = 0;
 int count_b_win = 0;
 
@@ -30,7 +32,6 @@ RESULT GameBoard() {
             result = JudgeMatch(player, &board);
         }
 
-
         if (result != NONE_WINNER && result != R_RESET) {
             Result(result);
             select = Rematch();
@@ -46,6 +47,7 @@ RESULT GameBoard() {
                     }
                 }
             }
+            judge_cnt = 0;
         }
     } while (result != R_RESET);
 
@@ -137,6 +139,7 @@ PLAYER_TURN InputBoard(PLAYER_TURN p, char* c) {
 }
 
 RESULT JudgeMatch(PLAYER_TURN p, char* c) {
+    judge_cnt++;
     //横列判定
     for (int i = 0; i < LENGTH; i++) {
         if (c[i*3] == c[i*3+1]) {
@@ -187,19 +190,21 @@ RESULT JudgeMatch(PLAYER_TURN p, char* c) {
         }
     }
 
-    for (int i = 0; i < 9; i++) {
-        printf("%s", strchr(c, i+1));
-        if (strchr(c, i + 1) != NULL) {
-            return NONE_WINNER;
-        }
+    if (judge_cnt == 9) {
+        return DRAW;
     }
 
-    return DRAW;
+    return NONE_WINNER;
 }
 
 void Result(RESULT r) {
     printf(" ________________________ \n\n\n");
-    printf("           %sの勝利\n", r == WINNER_A ? "A" : "B");
+    if (r == DRAW) {
+        printf("           引き分け\n");
+    }
+    else {
+        printf("           %sの勝利\n", r == WINNER_A ? "A" : "B");
+    }
     printf("        Aの勝利回数：%d\n", r == WINNER_A ? ++count_a_win : count_a_win);
     printf("        Bの勝利回数：%d\n", r == WINNER_B ? ++count_b_win : count_b_win);
 }
