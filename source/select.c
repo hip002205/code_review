@@ -3,50 +3,61 @@
 #include <stdio.h>
 #include <string.h>
 
-SELECT StartEnd(){
+SELECT StartEnd() {
     char check_str[3];
-    printf(" ____________________________ \n\n\n\n");
-    printf("            三目並べ           \n");
-    printf("          Start  [y/n] :");
-    scanf_s("%s", &check_str, sizeof(check_str));
-    printf("\n\n\n ____________________________ ");
+    printf(" ________________________ \n\n\n\n");
+    printf("       三目並べ           \n");
+    while (1) {
+        printf("     Start  [y/n] :");
+        scanf_s("%s", &check_str, sizeof(check_str));
 
-    if(strlen(check_str) != 1){
-        //再入力
-    }
 
-    if(check_str[0] = 'y'){
-        return START;
-    }
-    else if(check_str[0] == 'n') {
-        return END;
-    }
-    else {
-        //入力エラー
+        if (strlen(check_str) != 1) {
+            //再入力
+            InputError();
+            continue;
+        }
+
+        if (check_str[0] == 'y') {
+            printf("\n\n ________________________ \n");
+            return START;
+        }
+        else if (check_str[0] == 'n') {
+            printf("\n\n ________________________ \n");
+            return END;
+        }
+        else {
+            //入力エラー
+            InputError();
+            continue;
+        }
     }
 
 }
 
-SELECT Rematch(){
-    char check_str[3];
-    printf("       Continue?  [y/n] :   \n");
-    scanf_s("%s", &check_str, sizeof(check_str));
-    printf("                            \n");
-    printf("                            \n");
-    printf("  __________________________ \n");
+SELECT Rematch() {
+    char check_str[3] = "";
+    while (1) {
+        printf("       Continue?  [y/n] :   ");
+        scanf_s("%s", &check_str, sizeof(check_str));
 
+        if (strlen(check_str) != 1) {
+            //再入力
+            InputError();
+            continue;
+        }
 
-    if(strlen(check_str) != 1){
-        //再入力
+        if (check_str[0] == 'y') {
+            return START;
+        }
+        else if (check_str[0] == 'n') {
+            return END;
+        }
+        else {
+            //入力エラー
+            InputError();
+            continue;
+        }
     }
-
-    if(check_str[0] = 'y'){
-        return START;
-    }
-    else if(check_str[0] == 'n') {
-        return END;
-    }
-    else {
-        //入力エラー
-    }
+    printf("\n\n  __________________________ \n");
 }

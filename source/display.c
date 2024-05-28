@@ -10,175 +10,198 @@
 int count_a_win = 0;
 int count_b_win = 0;
 
-RESULT GameBoard(){
+RESULT GameBoard() {
     RESULT result = NONE_WINNER;
     PLAYER_TURN player = P_RESET;
     SELECT select = START;
-    char board[3][3] = {"123", "456", "789"};
+    char board[3][3] = { "123", "456", "789" };
 
-    do{
+    do {
         player = WhoTurn(player);
         printf(" ________________________ \n");
         printf("                         \n");
-        printf("   %s    リセット:R    \n", player == TURN_A ? ("Aの番") : ("Bの番"));
+        printf("            %s\n", player == TURN_A ? ("Aの番") : ("Bの番"));
         DisplayBoard(&board);
         player = InputBoard(player, &board);
-        if(player == P_RESET){
-            result =  R_RESET;
+        if (player == P_RESET) {
+            result = R_RESET;
         }
-        result = JudgeMatch(player, &board);
-        if(result != NONE_WINNER && result != R_RESET){
+        else {
+            result = JudgeMatch(player, &board);
+        }
+
+
+        if (result != NONE_WINNER && result != R_RESET) {
+            Result(result);
             select = Rematch();
-            if(select == END){
+            if (select == END) {
                 result = R_RESET;
             }
+            else {
+                int code = 49;
+                for (int i = 0; i < LENGTH; i++) {
+                    for (int y = 0; y < LENGTH; y++) {
+                        board[i][y] = code;
+                        code++;
+                    }
+                }
+            }
         }
-    }while(result == R_RESET);
+    } while (result != R_RESET);
 
     return result;
 }
 
-PLAYER_TURN WhoTurn(PLAYER_TURN p){
+PLAYER_TURN WhoTurn(PLAYER_TURN p) {
     srand((unsigned int)time(NULL));
-    if(p == P_RESET){
+    if (p == P_RESET) {
         int n = rand() % 2;
-        if(n == 0){
+        if (n == 0) {
             return TURN_A;
         }
-        else{
+        else {
             return TURN_B;
         }
-    }
-    else{
-        if(p == TURN_A){
-            return TURN_B;
-        }
-        else{
-            return TURN_A;
-        }
-    }
-}
-
-void DisplayBoard(char* c){
-    printf("                         \n");
-    for(int i = 0; i < LENGTH; i++){
-        printf("         |   |           \n");
-    printf("       %d | %d | %d         \n", c[0], c[1], c[2]);
-    c++;
-    printf("         |   |           \n");
-    if(i != 2){
-        printf("      ___|___|___        \n");
     }
     else {
-        printf("         |   |           \n");
+        if (p == TURN_A) {
+            return TURN_B;
+        }
+        else {
+            return TURN_A;
+        }
     }
-    }
-    printf("                         \n");
 }
 
-PLAYER_TURN InputBoard(PLAYER_TURN p, char* c){
+void DisplayBoard(char* c) {
+    printf("\n");
+    for (int i = 0; i < LENGTH; i++) {
+        printf("         |   |\n");
+        printf("       %c | %c | %c\n", c[i*3], c[i*3+1], c[i*3+2]);
+        printf("         |   |\n");
+        if (i != 2) {
+            printf("      ___|___|___\n");
+        }
+        else {
+            printf("         |   | \n");
+        }
+    }
+    printf("\n");
+}
+
+PLAYER_TURN InputBoard(PLAYER_TURN p, char* c) {
     char input_char[5];
     int input_num = 0;
 
-    while(1){
-        printf("    どこにいれますか? :   \n");
+    while (1) {
+        printf("  どこにいれますか?(Reset:r):");
         scanf_s("%s", &input_char, sizeof(input_char));
-        printf("                         \n");
-        printf(" _______________________ \n");
+        printf("\n ________________________\n");
 
-        if(strlen(input_char) == 1){
-            if(input_char[0] < '1' || input_char > '9' || RESET_COMMAND){
-                if(input_char  == RESET_COMMAND){
-                    return P_RESET;
-                }
-                else{
-                    input_num = atoi(input_char);
-                }
+        if (strlen(input_char) == 1) {
+            if (input_char[0] >= '1' && input_char[0] <= '9') {
+                input_num = atoi(input_char);
             }
-            else{
+            else if (input_char[0] == RESET_COMMAND) {
+                return P_RESET;
+            }
+            else {
                 //入力エラー
                 InputError();
                 continue;
             }
         }
-        else{
+        else {
             //入力エラー
             InputError();
             continue;
         }
 
-        for(int i = 0; i < LENGTH; i++){
-            if(strchr(c, input_num) != NULL){
-                if(p == TURN_A){
-                    c[input_num-1] = 'o';
-                    return TURN_A;
-                }
-                else{
-                    c[input_num-1] = 'x';
-                    return TURN_B;
-                }
+        if (strchr(c, input_char[0]) != NULL) {
+            if (p == TURN_A) {
+                c[input_num - 1] = 'o';
+                return TURN_A;
             }
-            else if(i + 1  == LENGTH){
-                //重複エラー
-                SameInputError();
-                continue;
+            else {
+                c[input_num - 1] = 'x';
+                return TURN_B;
             }
-            c++;
+        }
+
+        if (c[input_num - 1] == 'o' || c[input_num - 1] == 'x') {
+            //重複エラー
+            SameInputError();
+            continue;
         }
     }
 }
 
-RESULT JudgeMatch(PLAYER_TURN p, char* c){
+RESULT JudgeMatch(PLAYER_TURN p, char* c) {
     //横列判定
-    for(int i = 0; i < LENGTH; i++){
-        if(c[0] == c[1] == c[2]){
-            if(p == TURN_A){
-                return WINNER_A;
-            }else{
-                return WINNER_B;
+    for (int i = 0; i < LENGTH; i++) {
+        if (c[i*3] == c[i*3+1]) {
+            if (c[i * 3 + 1] == c[i * 3 + 2]) {
+                if (p == TURN_A) {
+                    return WINNER_A;
+                }
+                else {
+                    return WINNER_B;
+                }
             }
         }
-        c++;
     }
-    c -= 2;
     //縦列判定
-    for(int i = 0; i < LENGTH; i++){
-        if(c[i] == (c+1)[i] == (c+2)[i]){
-            if(p == TURN_A){
-                return WINNER_A;
-            }else{
-                return WINNER_B;
+    for (int i = 0; i < LENGTH; i++) {
+        if (c[i] == c[i + 3]) {
+            if (c[i + 3] == c[i + 6]) {
+                if (p == TURN_A) {
+                    return WINNER_A;
+                }
+                else {
+                    return WINNER_B;
+                }
             }
         }
     }
 
     //斜め判定
-    if(c[0] == (c+1)[1] == (c+2)[2]){
-        if(p == TURN_A){
+    if (c[0] == c[4]) {
+        if (c[4] == c[8]) {
+            if (p == TURN_A) {
                 return WINNER_A;
-            }else{
+            }
+            else {
                 return WINNER_B;
             }
+        }
     }
 
-    if(c[2] == (c+1)[1] == (c+2)[0]){
-        if(p == TURN_A){
+    if (c[2] == c[4]) {
+        if (c[4] == c[6]) {
+            if (p == TURN_A) {
                 return WINNER_A;
-            }else{
+            }
+            else {
                 return WINNER_B;
             }
+        }
     }
 
-    return NONE_WINNER;
+    for (int i = 0; i < 9; i++) {
+        printf("%s", strchr(c, i+1));
+        if (strchr(c, i + 1) != NULL) {
+            return NONE_WINNER;
+        }
+    }
+
+    return DRAW;
 }
 
-void Result(RESULT r){
-    printf("  __________________________ \n");
-    printf("                            \n");
-    printf("                            \n");
-    printf("           %cの勝利         \n", r == WINNER_A ? "A" : "B");
-    printf("        Aの勝利回数：%d       \n", r == WINNER_A ? ++count_a_win : count_a_win);
-    printf("        Bの勝利回数：%d       \n", r == WINNER_B ? ++count_b_win : count_b_win);
+void Result(RESULT r) {
+    printf(" ________________________ \n\n\n");
+    printf("           %sの勝利\n", r == WINNER_A ? "A" : "B");
+    printf("        Aの勝利回数：%d\n", r == WINNER_A ? ++count_a_win : count_a_win);
+    printf("        Bの勝利回数：%d\n", r == WINNER_B ? ++count_b_win : count_b_win);
 }
 
 void InputError() {
