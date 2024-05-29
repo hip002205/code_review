@@ -3,63 +3,91 @@
 #include <stdio.h>
 #include <string.h>
 
-//ゲームの開始終了を選択させる関数
-SELECT StartEnd() {
-    char check_str[3];
+#define DELETE_BUFFER         \
+    while (getchar() != '\n') \
+        ;
+
+SELECT StartEnd()
+{
+    char check_str = "";
     printf(" ________________________ \n\n\n\n");
     printf("       三目並べ           \n");
-    while (1) {
+    while (1)
+    {
         printf("     Start  [y/n] :");
-        scanf_s("%s", &check_str, sizeof(check_str));
+        scanf_s("%c", &check_str, (unsigned int)sizeof(check_str));
 
-
-        if (strlen(check_str) != 1) {
-            //再入力
+        if (check_str == '\n')
+        {
             InputError();
             continue;
         }
 
-        if (check_str[0] == 'y') {
+        if (getchar() != '\n')
+        {
+            // 入力エラー
+            InputError();
+            DELETE_BUFFER;
+            continue;
+        }
+
+        if (check_str == 'y')
+        {
             printf("\n\n ________________________ \n");
             return START;
         }
-        else if (check_str[0] == 'n') {
+        else if (check_str == 'n')
+        {
             printf("\n\n ________________________ \n");
             return END;
         }
-        else {
-            //入力エラー
+        else
+        {
+            // 入力エラー
             InputError();
+            DELETE_BUFFER;
             continue;
         }
     }
-
 }
 
-//ゲームの再選を選択させる関数
-SELECT Rematch() {
-    char check_str[3] = "";
-    while (1) {
-        printf("       Continue?  [y/n] :");
-        scanf_s("%s", &check_str, sizeof(check_str));
+SELECT Rematch()
+{
+    char check_str = "";
+    while (1)
+    {
+        printf("       Continue?  [y/n] : ");
+        scanf_s("%c", &check_str, (unsigned int)sizeof(check_str));
 
-        if (strlen(check_str) != 1) {
-            //再入力
+        if (check_str == '\n')
+        {
             InputError();
             continue;
         }
 
-        if (check_str[0] == 'y') {
+        if (getchar() != '\n')
+        {
+            // 入力エラー
+            InputError();
+            DELETE_BUFFER;
+            continue;
+        }
+
+        if (check_str == 'y')
+        {
             return START;
         }
-        else if (check_str[0] == 'n') {
+        else if (check_str == 'n')
+        {
             return END;
         }
-        else {
-            //入力エラー
+        else
+        {
+            // 入力エラー
             InputError();
+            DELETE_BUFFER;
             continue;
         }
     }
-    printf("\n\n  __________________________\n");
+    printf("\n\n  __________________________ \n");
 }
