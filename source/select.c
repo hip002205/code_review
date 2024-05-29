@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
+//ゲームの開始終了を選択させる関数
 SELECT StartEnd() {
     char check_str[3];
     printf(" ________________________ \n\n\n\n");
@@ -35,10 +36,11 @@ SELECT StartEnd() {
 
 }
 
+//ゲームの再選を選択させる関数
 SELECT Rematch() {
     char check_str[3] = "";
     while (1) {
-        printf("       Continue?  [y/n] :   ");
+        printf("       Continue?  [y/n] :");
         scanf_s("%s", &check_str, sizeof(check_str));
 
         if (strlen(check_str) != 1) {
@@ -59,5 +61,5 @@ SELECT Rematch() {
             continue;
         }
     }
-    printf("\n\n  __________________________ \n");
+    printf("\n\n  __________________________\n");
 }

@@ -5,18 +5,20 @@
 #include <string.h>
 #include <time.h>
 
-#define LENGTH 3
+#define LENGTH 3        //配列の長さ
 
-int judge_cnt = 0;
+int judge_cnt = 0;      //勝敗判定を記録する変数
 
-int count_a_win = 0;
-int count_b_win = 0;
+int count_a_win = 0;    //プレイヤーAの勝利回数を記録する変数
+int count_b_win = 0;    //プレイヤーBの勝利回数を記録する変数
 
+
+//ゲーム部分
 RESULT GameBoard() {
-    RESULT result = NONE_WINNER;
-    PLAYER_TURN player = P_RESET;
-    SELECT select = START;
-    char board[3][3] = { "123", "456", "789" };
+    RESULT result = NONE_WINNER;    //勝敗判定を記録するRESULT型の変数
+    PLAYER_TURN player = P_RESET;   //プレイヤーの手番を記録するPLAYER_TURN型の変数
+    SELECT select = START;          //ゲームを開始するか終了するかを記録するSELECT型の変数
+    char board[3][3] = { "123", "456", "789" }; //三目並べの盤面を記録する配列
 
     do {
         player = WhoTurn(player);
@@ -54,6 +56,10 @@ RESULT GameBoard() {
     return result;
 }
 
+
+//プレイヤーの手番を決定する関数
+//一番最初のゲームではランダムで手番を決定する
+//それ以降は、先攻と後攻を入れ替える
 PLAYER_TURN WhoTurn(PLAYER_TURN p) {
     srand((unsigned int)time(NULL));
     if (p == P_RESET) {
@@ -75,6 +81,7 @@ PLAYER_TURN WhoTurn(PLAYER_TURN p) {
     }
 }
 
+//三目並べの盤面を表示する関数
 void DisplayBoard(char* c) {
     printf("\n");
     for (int i = 0; i < LENGTH; i++) {
@@ -91,6 +98,8 @@ void DisplayBoard(char* c) {
     printf("\n");
 }
 
+//各プレイヤーの手番に空いているマスの中から
+//一つ選んでもらい、そこに各プレイヤーの記号を代入する関数
 PLAYER_TURN InputBoard(PLAYER_TURN p, char* c) {
     char input_char[5];
     int input_num = 0;
@@ -138,8 +147,10 @@ PLAYER_TURN InputBoard(PLAYER_TURN p, char* c) {
     }
 }
 
+//勝敗を判定する関数
 RESULT JudgeMatch(PLAYER_TURN p, char* c) {
     judge_cnt++;
+
     //横列判定
     for (int i = 0; i < LENGTH; i++) {
         if (c[i*3] == c[i*3+1]) {
@@ -153,6 +164,7 @@ RESULT JudgeMatch(PLAYER_TURN p, char* c) {
             }
         }
     }
+
     //縦列判定
     for (int i = 0; i < LENGTH; i++) {
         if (c[i] == c[i + 3]) {
@@ -179,6 +191,7 @@ RESULT JudgeMatch(PLAYER_TURN p, char* c) {
         }
     }
 
+    //引き分け判定
     if (c[2] == c[4]) {
         if (c[4] == c[6]) {
             if (p == TURN_A) {
@@ -197,8 +210,9 @@ RESULT JudgeMatch(PLAYER_TURN p, char* c) {
     return NONE_WINNER;
 }
 
+//勝敗結果に応じた勝敗画面を表示する関数
 void Result(RESULT r) {
-    printf(" ________________________ \n\n\n");
+    printf(" ________________________\n\n\n");
     if (r == DRAW) {
         printf("           引き分け\n");
     }
@@ -209,6 +223,7 @@ void Result(RESULT r) {
     printf("        Bの勝利回数：%d\n", r == WINNER_B ? ++count_b_win : count_b_win);
 }
 
+//不正な入力をした際にエラー文を表示する関数
 void InputError() {
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 26; j++) {
@@ -245,6 +260,7 @@ void InputError() {
     }
 }
 
+//重複するマスに入力されたときにエラー文を表示する関数
 void SameInputError() {
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 26; j++) {
