@@ -1,91 +1,47 @@
+﻿#include <stdio.h>
 #include "select.h"
-#include "display.h"
-#include <stdio.h>
-#include <string.h>
 
-#define DELETE_BUFFER         \
-    while (getchar() != '\n') \
-        ;
-
-SELECT StartEnd()
-{
-    char check_str = "";
+SELECT StartEnd() {
+    int  input;
+    char c_input[2] = {""};
     printf(" ________________________ \n\n\n\n");
-    printf("       三目並べ           \n");
-    while (1)
-    {
+    printf("         三目並べ         \n");
+    while (1) {
         printf("     Start  [y/n] :");
-        scanf_s("%c", &check_str, (unsigned int)sizeof(check_str));
-
-        if (check_str == '\n')
-        {
-            InputError();
-            continue;
+        while ((input = getchar()) != '\n' && input != EOF) {
+            c_input[0] = input;
         }
 
-        if (getchar() != '\n')
-        {
-            // 入力エラー
-            InputError();
-            DELETE_BUFFER;
-            continue;
-        }
-
-        if (check_str == 'y')
-        {
+        if (c_input[0] == 0x79) {
             printf("\n\n ________________________ \n");
             return START;
         }
-        else if (check_str == 'n')
-        {
-            printf("\n\n ________________________ \n");
+        else if (c_input[0] == 0x6e) {
+            ("\n\n ________________________ \n");
             return END;
         }
-        else
-        {
-            // 入力エラー
+        else {
             InputError();
-            DELETE_BUFFER;
             continue;
         }
     }
 }
 
-SELECT Rematch()
-{
-    char check_str = "";
-    while (1)
-    {
-        printf("       Continue?  [y/n] : ");
-        scanf_s("%c", &check_str, (unsigned int)sizeof(check_str));
-
-        if (check_str == '\n')
-        {
-            InputError();
-            continue;
+SELECT Rematch() {
+    int  input;
+    char c_input[2] = {""};
+    while(1) {
+        printf("       Continue?  [y/n] :");
+        while ((input = getchar()) != '\n' && input != EOF) {
+            c_input[0] = input;
         }
 
-        if (getchar() != '\n')
-        {
-            // 入力エラー
-            InputError();
-            DELETE_BUFFER;
-            continue;
-        }
-
-        if (check_str == 'y')
-        {
+        if (c_input[0] == 0x79) {
             return START;
-        }
-        else if (check_str == 'n')
-        {
+        } else if (c_input[0] == 0x6e) {
             return END;
-        }
-        else
-        {
-            // 入力エラー
+        } else {
             InputError();
-            DELETE_BUFFER;
             continue;
         }
     }

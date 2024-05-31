@@ -1,14 +1,12 @@
-#ifndef SELECT_H
-#define SELECT_H
-
-//選択
-typedef enum{
+﻿#ifndef SELECT_H_
+#define SELECT_H_
+typedef enum {
     START,
     END
-}SELECT;
+} SELECT;
 
-SELECT StartEnd();  //ゲームの開始と終了をプレイヤーに選択させる関数
+SELECT StartEnd();
 
-SELECT Rematch();   //プレイヤーに再戦するかを選択させる関数
+SELECT Rematch();
 
-#endif
+#endif // SELECT_H_
