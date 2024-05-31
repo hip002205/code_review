@@ -54,9 +54,9 @@ RESULT GameBoard() {
 
 PLAYER_TURN WhoTurn(PLAYER_TURN PT) {
     srand((unsigned int)time(NULL));
-    
+
     if (PT == P_RESET) {
-        int toss = rand() % 2;        
+        int toss = rand() % 2;
         switch(toss) {
             case 0:
             return TURN_A;
@@ -77,7 +77,7 @@ PLAYER_TURN WhoTurn(PLAYER_TURN PT) {
 PLAYER_TURN InputBoard(PLAYER_TURN PT, char *c) {
     int  num_input;
     char char_input[2] = { "" };
-    
+
     while(1) {
         printf("どこにいれますか？(Reset[r]):");
         while ((num_input = getchar()) != '\n' && num_input != EOF) {
@@ -176,7 +176,7 @@ RESULT JudgeMatch(PLAYER_TURN PT, char *c) {
     char num_or_symbol_check = 0x31;
     for (int i = 0; i < 9; i++) {
         if (c[i] == num_or_symbol_check) {
-            return NONE_WINNER; 
+            return NONE_WINNER;
         }
         num_or_symbol_check++;
     }
