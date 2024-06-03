@@ -76,15 +76,23 @@ PLAYER_TURN WhoTurn(PLAYER_TURN PT) {
 
 PLAYER_TURN InputBoard(PLAYER_TURN PT, char *c) {
     int  num_input;
+    int count_input;
     char char_input[2] = { "" };
     
     while(1) {
         printf("どこにいれますか？(Reset[r]):");
+        count_input = 0;
         while ((num_input = getchar()) != '\n' && num_input != EOF) {
+            count_input++;
             char_input[0] = num_input;
         }
         num_input = atoi(char_input);
         printf(" ________________________\n");
+
+        if (count_input != 1) {
+            InputError();
+            continue;
+        }
 
         if ((num_input >= 1 && num_input <= 9) || (char_input[0] == RESET_COMMAND)) {
             if (strchr(c, char_input[0]) != NULL) {
@@ -172,7 +180,7 @@ RESULT JudgeMatch(PLAYER_TURN PT, char *c) {
         }
     }
 
-    // 引き分け
+    // 試合続行か判断
     char num_or_symbol_check = 0x31;
     for (int i = 0; i < 9; i++) {
         if (c[i] == num_or_symbol_check) {
