@@ -76,20 +76,20 @@ PLAYER_TURN WhoTurn(PLAYER_TURN PT) {
 
 PLAYER_TURN InputBoard(PLAYER_TURN PT, char *c) {
     int  num_input;
-    int count_input;
+    int input_length;
     char char_input[2] = { "" };
     
     while(1) {
         printf("どこにいれますか？(Reset[r]):");
-        count_input = 0;
+        input_length = 0;
         while ((num_input = getchar()) != '\n' && num_input != EOF) {
-            count_input++;
+            input_length++;
             char_input[0] = num_input;
         }
         num_input = atoi(char_input);
         printf(" ________________________\n");
 
-        if (count_input != 1) {
+        if (input_length != 1) {
             InputError();
             continue;
         }
