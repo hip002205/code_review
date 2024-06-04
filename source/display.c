@@ -19,7 +19,7 @@ RESULT GameBoard() {
 
     do {
         player = WhoTurn(player);
-        printf(" ________________________ \n");
+        printf(" ______________________________ \n");
         printf("                         \n");
         printf("         %s\n", player == TURN_A ? ("Aの番") : ("Bの番"));
         DisplayBoard(&board);
@@ -87,7 +87,7 @@ PLAYER_TURN InputBoard(PLAYER_TURN PT, char *c) {
             char_input[0] = num_input;
         }
         num_input = atoi(char_input);
-        printf(" ________________________\n");
+        printf(" ______________________________\n");
 
         if (input_length != 1) {
             InputError();
@@ -197,10 +197,10 @@ void Result(RESULT r) {
         // 引き分け
         printf("          引き分け\n");
     } else {
-        printf("         %sの勝利\n", r == WINNER_A ? "A" : "B");
+        printf("\n           %sの勝利\n", r == WINNER_A ? "A" : "B");
     }
-    printf("       Aの勝利回数:%d\n", r == WINNER_A ? ++g_count_a_win : g_count_a_win);
-    printf("       Bの勝利回数:%d\n", r == WINNER_B ? ++g_count_b_win : g_count_b_win);
+    printf("        Aの勝利回数:%d\n", r == WINNER_A ? ++g_count_a_win : g_count_a_win);
+    printf("        Bの勝利回数:%d\n", r == WINNER_B ? ++g_count_b_win : g_count_b_win);
 }
 
 void InputError() {
