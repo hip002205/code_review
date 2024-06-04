@@ -1,6 +1,7 @@
 ﻿#include <stdio.h>
 #include "select.h"
 
+//三目並べスタート選択関数
 SELECT StartEnd() {
     int  num_input;
     int input_length;
@@ -35,6 +36,7 @@ SELECT StartEnd() {
     }
 }
 
+//再戦選択関数
 SELECT Rematch() {
     int  num_input;
     int  input_length;
