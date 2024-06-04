@@ -10,6 +10,7 @@ int g_count_judge = 0;
 int g_count_a_win = 0;
 int g_count_b_win = 0;
 
+//ゲーム進行関数
 RESULT GameBoard() {
     RESULT      result = NONE_WINNER;
     PLAYER_TURN player = P_RESET;
@@ -52,6 +53,7 @@ RESULT GameBoard() {
     return result;
 }
 
+//手番決定関数
 PLAYER_TURN WhoTurn(PLAYER_TURN PT) {
     srand((unsigned int)time(NULL));
 
@@ -74,6 +76,7 @@ PLAYER_TURN WhoTurn(PLAYER_TURN PT) {
     }
 }
 
+//盤面入力関数
 PLAYER_TURN InputBoard(PLAYER_TURN PT, char *c) {
     int  num_input;
     int input_length;
@@ -118,6 +121,7 @@ PLAYER_TURN InputBoard(PLAYER_TURN PT, char *c) {
     }
 }
 
+//盤面出力関数
 void DisplayBoard(char *c) {
     printf("\n");
     for (int i = 0; i < LENGTH; i++) {
@@ -133,6 +137,7 @@ void DisplayBoard(char *c) {
     printf("\n");
 }
 
+//勝敗決定関数
 RESULT JudgeMatch(PLAYER_TURN PT, char *c) {
     g_count_judge++;
     // 横
@@ -192,6 +197,7 @@ RESULT JudgeMatch(PLAYER_TURN PT, char *c) {
     return DRAW;
 }
 
+//勝敗表示関数
 void Result(RESULT r) {
     if (r == DRAW) {
         // 引き分け
