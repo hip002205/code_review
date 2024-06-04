@@ -10,13 +10,12 @@ int g_count_judge = 0;
 int g_count_a_win = 0;
 int g_count_b_win = 0;
 
-//ゲーム進行関数
 RESULT GameBoard() {
     RESULT      result = NONE_WINNER;
     PLAYER_TURN player = P_RESET;
     SELECT      select = START;
 
-    char board[3][3] = {"123", "456", "789"};
+    char board[3][3] = { "123", "456", "789" };
 
     do {
         player = WhoTurn(player);
@@ -37,7 +36,8 @@ RESULT GameBoard() {
             select = Rematch();
             if (select == END) {
                 result = R_RESET;
-            } else {
+            }
+            else {
                 int code = 0x31;
                 for (int i = 0; i < LENGTH; i++) {
                     for (int j = 0; j < LENGTH; j++) {
@@ -53,16 +53,15 @@ RESULT GameBoard() {
     return result;
 }
 
-//手番決定関数
 PLAYER_TURN WhoTurn(PLAYER_TURN PT) {
     srand((unsigned int)time(NULL));
 
     if (PT == P_RESET) {
         int toss = rand() % 2;
-        switch(toss) {
-            case 0:
+        switch (toss) {
+        case 0:
             return TURN_A;
-            case 1:
+        case 1:
             return TURN_B;
         }
     }
@@ -76,26 +75,25 @@ PLAYER_TURN WhoTurn(PLAYER_TURN PT) {
     }
 }
 
-//盤面入力関数
-PLAYER_TURN InputBoard(PLAYER_TURN PT, char *c) {
+PLAYER_TURN InputBoard(PLAYER_TURN PT, char* c) {
+    int  input_cnt = 0;
     int  num_input;
-    int input_length;
     char char_input[2] = { "" };
 
-    while(1) {
+    while (1) {
         printf("どこにいれますか？(Reset[r]):");
-        input_length = 0;
         while ((num_input = getchar()) != '\n' && num_input != EOF) {
-            input_length++;
+            input_cnt++;
             char_input[0] = num_input;
+        }
+
+        if (input_cnt != 1) {
+            InputError();
+            input_cnt = 0;
+            continue;
         }
         num_input = atoi(char_input);
         printf(" ________________________\n");
-
-        if (input_length != 1) {
-            InputError();
-            continue;
-        }
 
         if ((num_input >= 1 && num_input <= 9) || (char_input[0] == RESET_COMMAND)) {
             if (strchr(c, char_input[0]) != NULL) {
@@ -110,19 +108,20 @@ PLAYER_TURN InputBoard(PLAYER_TURN PT, char *c) {
             }
             if (char_input[0] == RESET_COMMAND) {
                 return P_RESET;
-            } else {
+            }
+            else {
                 SameInputError();
                 continue;
             }
-        } else {
+        }
+        else {
             InputError();
             continue;
         }
     }
 }
 
-//盤面出力関数
-void DisplayBoard(char *c) {
+void DisplayBoard(char* c) {
     printf("\n");
     for (int i = 0; i < LENGTH; i++) {
         printf("         |   |\n");
@@ -130,15 +129,15 @@ void DisplayBoard(char *c) {
         printf("         |   |\n");
         if (i != 2) {
             printf("      ___|___|___\n");
-        } else {
+        }
+        else {
             printf("         |   | \n");
         }
     }
     printf("\n");
 }
 
-//勝敗決定関数
-RESULT JudgeMatch(PLAYER_TURN PT, char *c) {
+RESULT JudgeMatch(PLAYER_TURN PT, char* c) {
     g_count_judge++;
     // 横
     for (int i = 0; i < LENGTH; i++) {
@@ -146,7 +145,8 @@ RESULT JudgeMatch(PLAYER_TURN PT, char *c) {
             if (c[i * 3 + 1] == c[i * 3 + 2]) {
                 if (PT == TURN_A) {
                     return WINNER_A;
-                } else {
+                }
+                else {
                     return WINNER_B;
                 }
             }
@@ -158,7 +158,8 @@ RESULT JudgeMatch(PLAYER_TURN PT, char *c) {
             if (c[i + 3] == c[i + 6]) {
                 if (PT == TURN_A) {
                     return WINNER_A;
-                } else {
+                }
+                else {
                     return WINNER_B;
                 }
             }
@@ -169,7 +170,8 @@ RESULT JudgeMatch(PLAYER_TURN PT, char *c) {
         if (c[4] == c[8]) {
             if (PT == TURN_A) {
                 return WINNER_A;
-            } else {
+            }
+            else {
                 return WINNER_B;
             }
         }
@@ -179,13 +181,14 @@ RESULT JudgeMatch(PLAYER_TURN PT, char *c) {
         if (c[4] == c[6]) {
             if (PT == TURN_A) {
                 return WINNER_A;
-            } else {
+            }
+            else {
                 return WINNER_B;
             }
         }
     }
 
-    // 試合続行か判断
+    // 引き分け
     char num_or_symbol_check = 0x31;
     for (int i = 0; i < 9; i++) {
         if (c[i] == num_or_symbol_check) {
@@ -197,12 +200,12 @@ RESULT JudgeMatch(PLAYER_TURN PT, char *c) {
     return DRAW;
 }
 
-//勝敗表示関数
 void Result(RESULT r) {
     if (r == DRAW) {
         // 引き分け
         printf("          引き分け\n");
-    } else {
+    }
+    else {
         printf("         %sの勝利\n", r == WINNER_A ? "A" : "B");
     }
     printf("       Aの勝利回数:%d\n", r == WINNER_A ? ++g_count_a_win : g_count_a_win);
