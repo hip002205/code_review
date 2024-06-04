@@ -26,7 +26,7 @@ SELECT StartEnd() {
             return START;
         }
         else if (char_input[0] == 0x6e) {
-            ("\n\n ________________________ \n");
+            printf("\n\n ________________________ \n");
             return END;
         }
         else {
