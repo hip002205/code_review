@@ -5,10 +5,10 @@ SELECT StartEnd() {
     int  num_input;
     int input_length;
     char char_input[2] = {""};
-    printf(" ________________________ \n\n\n\n");
-    printf("         三目並べ         \n");
+    printf(" ______________________________ \n\n\n\n");
+    printf("           三目並べ         \n");
     while (1) {
-        printf("     Start  [y/n] :");
+        printf("         Start  [y/n] :");
         input_length = 0;
         while ((num_input = getchar()) != '\n' && num_input != EOF) {
             input_length++;
@@ -21,11 +21,11 @@ SELECT StartEnd() {
         }
 
         if (char_input[0] == 0x79) {
-            printf("\n\n ________________________ \n");
+            printf("\n\n ______________________________ \n");
             return START;
         }
         else if (char_input[0] == 0x6e) {
-            ("\n\n ________________________ \n");
+            printf("\n\n ______________________________ \n");
             return END;
         }
         else {
@@ -56,5 +56,5 @@ SELECT Rematch() {
             continue;
         }
     }
-    printf("\n\n  __________________________ \n");
+    printf("\n\n ______________________________ \n");
 }
