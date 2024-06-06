@@ -78,9 +78,9 @@ PLAYER_TURN WhoTurn(PLAYER_TURN PT) {
 PLAYER_TURN InputBoard(PLAYER_TURN PT, char* c) {
     int  input_cnt = 0;
     int  num_input;
-    char char_input[2] = { "" };
 
     while (1) {
+        char char_input[2] = { "" };
         printf("どこにいれますか？(Reset[r]):");
         while ((num_input = getchar()) != '\n' && num_input != EOF) {
             input_cnt++;
@@ -106,16 +106,18 @@ PLAYER_TURN InputBoard(PLAYER_TURN PT, char* c) {
                     return TURN_B;
                 }
             }
-            if (char_input[0] == RESET_COMMAND) {
+            else if (char_input[0] == RESET_COMMAND) {
                 return P_RESET;
             }
             else {
                 SameInputError();
+                input_cnt = 0;
                 continue;
             }
         }
         else {
             InputError();
+            input_cnt = 0;
             continue;
         }
     }
@@ -203,10 +205,10 @@ RESULT JudgeMatch(PLAYER_TURN PT, char* c) {
 void Result(RESULT r) {
     if (r == DRAW) {
         // 引き分け
-        printf("          引き分け\n");
+        printf("\n          引き分け\n");
     }
     else {
-        printf("         %sの勝利\n", r == WINNER_A ? "A" : "B");
+        printf("\n         %sの勝利\n", r == WINNER_A ? "A" : "B");
     }
     printf("       Aの勝利回数:%d\n", r == WINNER_A ? ++g_count_a_win : g_count_a_win);
     printf("       Bの勝利回数:%d\n", r == WINNER_B ? ++g_count_b_win : g_count_b_win);
@@ -218,7 +220,7 @@ void InputError()
     for (int i = 0; i < 5; i++) {
         switch (i) {
         case 0:
-            printf(" ________________________ ");
+            printf("\n ________________________ ");
             break;
         case 1:
             printf("|                        |");
@@ -235,6 +237,7 @@ void InputError()
         }
         printf("\n");
     }
+    printf("\n");
 }
 
 // 空いていないマスの数字を入れた際に表示される関数
@@ -243,7 +246,7 @@ void SameInputError()
     for (int i = 0; i < 5; i++) {
         switch (i) {
         case 0:
-            printf(" ________________________ ");
+            printf("\n ________________________ ");
             break;
         case 1:
             printf("|                        |");
@@ -260,4 +263,5 @@ void SameInputError()
         }
         printf("\n");
     }
+    printf("\n");
 }
