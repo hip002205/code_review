@@ -2,14 +2,20 @@
 #include "display.h"
 #include "select.h"
 
-void main() {
-    RESULT result = NONE_WINNER;
-    SELECT select = StartEnd();
+//プログラム進行関数
+int main() {
+    RESULT r = NONE_WINNER;
+    SELECT s;
 
-    while (select == START) {
-        result = GameBoard();
-        if (result == R_RESET) {
-            select = StartEnd();
+    s = StartEnd();
+
+    while (s == START)
+    {
+        r = GameBoard();
+        if (r == R_RESET) {
+            s = StartEnd();
         }
     }
+
+    return 0;
 }

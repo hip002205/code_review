@@ -1,60 +1,69 @@
 ﻿#include <stdio.h>
 #include "select.h"
 
-//三目並べスタート選択関数
+//ゲーム開始時選択関数
 SELECT StartEnd() {
-    int  num_input;
-    int input_length;
-    char char_input[2] = {""};
+    int  input_cnt = 0;
+    int  input;
+    char c_input[2] = { "" };
     printf(" ________________________ \n\n\n\n");
     printf("         三目並べ         \n");
     while (1) {
         printf("     Start  [y/n] :");
-        input_length = 0;
-        while ((num_input = getchar()) != '\n' && num_input != EOF) {
-            input_length++;
-            char_input[0] = num_input;
+        while ((input = getchar()) != '\n' && input != EOF) {
+            input_cnt++;
+            c_input[0] = input;
         }
 
-        if (input_length != 1) {
+        if (input_cnt != 1) {
             InputError();
+            input_cnt = 0;
             continue;
         }
 
-        if (char_input[0] == 0x79) {
+        if (c_input[0] == 0x79) {
             printf("\n\n ________________________ \n");
             return START;
         }
-        else if (char_input[0] == 0x6e) {
-            printf("\n\n ________________________ \n");
+        else if (c_input[0] == 0x6e) {
+            ("\n\n ________________________ \n");
             return END;
         }
         else {
             InputError();
+            input_cnt = 0;
             continue;
         }
     }
 }
 
-//再戦選択関数
+//再戦時選択関数
 SELECT Rematch() {
-    int  num_input;
-    int  input_length;
-    char char_input[2] = {""};
-    while(1) {
+    int  input_cnt = 0;
+    int  input;
+    char c_input[2] = { "" };
+    while (1) {
         printf("       Continue?  [y/n] :");
-        input_length = 0;
-        while ((num_input = getchar()) != '\n' && num_input != EOF) {
-            char_input[0] = num_input;
-            input_length++;
+        while ((input = getchar()) != '\n' && input != EOF) {
+            input_cnt++;
+            c_input[0] = input;
         }
 
-        if (char_input[0] == 0x79) {
-            return START;
-        } else if (char_input[0] == 0x6e) {
-            return END;
-        } else {
+        if (input_cnt != 1) {
             InputError();
+            input_cnt = 0;
+            continue;
+        }
+
+        if (c_input[0] == 0x79) {
+            return START;
+        }
+        else if (c_input[0] == 0x6e) {
+            return END;
+        }
+        else {
+            InputError();
+            input_cnt = 0;
             continue;
         }
     }
