@@ -3,7 +3,7 @@
 #include "select.h"
 
 //プログラム進行関数
-int main() {
+int main(void) {
     RESULT r = NONE_WINNER;
     SELECT s;
 

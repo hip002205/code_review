@@ -2,7 +2,7 @@
 #include "select.h"
 
 //ゲーム開始時選択関数
-SELECT StartEnd() {
+SELECT StartEnd(void) {
     int  input_cnt = 0;
     int  input;
     char c_input[2] = { "" };
@@ -38,7 +38,7 @@ SELECT StartEnd() {
 }
 
 //再戦時選択関数
-SELECT Rematch() {
+SELECT Rematch(void) {
     int  input_cnt = 0;
     int  input;
     char c_input[2] = { "" };
