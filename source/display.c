@@ -6,12 +6,8 @@
 
 #define LENGTH 3
 
-int g_count_judge = 0;  //勝敗判定回数を保持する変数
-int g_count_a_win = 0;  //プレイヤーＡの勝利回数を保持する変数
-int g_count_b_win = 0;  //プレイヤーＢの勝利回数を保持する変数
-
 //ゲーム進行関数
-RESULT GameBoard() {
+RESULT GameBoard(void) {
     RESULT      result = NONE_WINNER;
     PLAYER_TURN player = P_RESET;
     SELECT      select = START;
@@ -27,6 +23,7 @@ RESULT GameBoard() {
         player = InputBoard(player, &board);
         if (player == P_RESET) {
             result = R_RESET;
+            Result(result);
         }
         else {
             result = JudgeMatch(player, &board);
@@ -47,7 +44,6 @@ RESULT GameBoard() {
                     }
                 }
             }
-            g_count_judge = 0;
         }
     } while (result != R_RESET);
 
@@ -145,7 +141,6 @@ void DisplayBoard(char* c) {
 
 //勝敗判定関数
 RESULT JudgeMatch(PLAYER_TURN PT, char* c) {
-    g_count_judge++;
     // 横
     for (int i = 0; i < LENGTH; i++) {
         if (c[i * 3] == c[i * 3 + 1]) {
@@ -209,19 +204,28 @@ RESULT JudgeMatch(PLAYER_TURN PT, char* c) {
 
 //勝敗表示関数
 void Result(RESULT r) {
+    static int g_count_a_win = 0;  //プレイヤーＡの勝利回数を保持する変数
+    static int g_count_b_win = 0;  //プレイヤーＢの勝利回数を保持する変数
+
     if (r == DRAW) {
         // 引き分け
         printf("\n          引き分け\n");
+        printf("       Aの勝利回数:%d\n", r == WINNER_A ? ++g_count_a_win : g_count_a_win);
+        printf("       Bの勝利回数:%d\n", r == WINNER_B ? ++g_count_b_win : g_count_b_win);
+    }
+    else if(r == R_RESET){
+        g_count_a_win = 0;
+        g_count_b_win = 0;
     }
     else {
         printf("\n         %sの勝利\n", r == WINNER_A ? "A" : "B");
+        printf("       Aの勝利回数:%d\n", r == WINNER_A ? ++g_count_a_win : g_count_a_win);
+        printf("       Bの勝利回数:%d\n", r == WINNER_B ? ++g_count_b_win : g_count_b_win);
     }
-    printf("       Aの勝利回数:%d\n", r == WINNER_A ? ++g_count_a_win : g_count_a_win);
-    printf("       Bの勝利回数:%d\n", r == WINNER_B ? ++g_count_b_win : g_count_b_win);
 }
 
 // 入力値異常時に表示される関数
-void InputError()
+void InputError(void)
 {
     for (int i = 0; i < 5; i++) {
         switch (i) {
@@ -247,7 +251,7 @@ void InputError()
 }
 
 // 空いていないマスの数字を入れた際に表示される関数
-void SameInputError()
+void SameInputError(void)
 {
     for (int i = 0; i < 5; i++) {
         switch (i) {
