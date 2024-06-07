@@ -4,8 +4,6 @@
 #include "display.h"
 #include "select.h"
 
-#define LENGTH 3
-
 //ゲーム進行関数
 RESULT GameBoard(void) {
     RESULT      result = NONE_WINNER;
@@ -38,8 +36,8 @@ RESULT GameBoard(void) {
             }
             else {
                 int code = 0x31;
-                for (int i = 0; i < LENGTH; i++) {
-                    for (int j = 0; j < LENGTH; j++) {
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
                         board[i][j] = code;
                         code++;
                     }
@@ -126,7 +124,7 @@ PLAYER_TURN InputBoard(PLAYER_TURN PT, char* c) {
 //盤面表示関数
 void DisplayBoard(char* c) {
     printf("\n");
-    for (int i = 0; i < LENGTH; i++) {
+    for (int i = 0; i < 3; i++) {
         printf("         |   |\n");
         printf("       %c | %c | %c\n", c[i * 3], c[i * 3 + 1], c[i * 3 + 2]);
         printf("         |   |\n");
@@ -143,7 +141,7 @@ void DisplayBoard(char* c) {
 //勝敗判定関数
 RESULT JudgeMatch(PLAYER_TURN PT, char* c) {
     // 横
-    for (int i = 0; i < LENGTH; i++) {
+    for (int i = 0; i < 3; i++) {
         if (c[i * 3] == c[i * 3 + 1]) {
             if (c[i * 3 + 1] == c[i * 3 + 2]) {
                 if (PT == TURN_A) {
@@ -157,7 +155,7 @@ RESULT JudgeMatch(PLAYER_TURN PT, char* c) {
     }
 
     // 縦
-    for (int i = 0; i < LENGTH; i++) {
+    for (int i = 0; i < 3; i++) {
         if (c[i] == c[i + 3]) {
             if (c[i + 3] == c[i + 6]) {
                 if (PT == TURN_A) {
