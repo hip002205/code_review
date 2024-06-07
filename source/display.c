@@ -34,6 +34,7 @@ RESULT GameBoard(void) {
             select = Rematch();
             if (select == END) {
                 result = R_RESET;
+                Result(result);
             }
             else {
                 int code = 0x31;
@@ -213,7 +214,7 @@ void Result(RESULT r) {
         printf("       Aの勝利回数:%d\n", r == WINNER_A ? ++g_count_a_win : g_count_a_win);
         printf("       Bの勝利回数:%d\n", r == WINNER_B ? ++g_count_b_win : g_count_b_win);
     }
-    else if(r == R_RESET){
+    else if (r == R_RESET) {
         g_count_a_win = 0;
         g_count_b_win = 0;
     }
