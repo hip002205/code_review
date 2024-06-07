@@ -67,5 +67,5 @@ SELECT Rematch(void) {
             continue;
         }
     }
-    printf("\n\n  __________________________ \n");
+    printf("\n\n ______________________________ \n");
 }

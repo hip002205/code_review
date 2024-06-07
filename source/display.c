@@ -14,7 +14,7 @@ RESULT GameBoard(void) {
 
     do {
         player = WhoTurn(player);
-        printf(" ________________________ \n");
+        printf(" ______________________________ \n");
         printf("                         \n");
         printf("         %s\n", player == TURN_A ? ("Aの番") : ("Bの番"));
         DisplayBoard(&board);
@@ -84,6 +84,8 @@ PLAYER_TURN InputBoard(PLAYER_TURN PT, char* c) {
             input_cnt++;
             char_input[0] = num_input;
         }
+        num_input = atoi(char_input);
+        printf(" ______________________________\n");
 
         if (input_cnt != 1) {
             InputError();
