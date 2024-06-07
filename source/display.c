@@ -155,6 +155,7 @@ RESULT JudgeMatch(PLAYER_TURN PT, char* c) {
             }
         }
     }
+
     // 縦
     for (int i = 0; i < LENGTH; i++) {
         if (c[i] == c[i + 3]) {
@@ -168,6 +169,7 @@ RESULT JudgeMatch(PLAYER_TURN PT, char* c) {
             }
         }
     }
+
     // 斜め
     if (c[0] == c[4]) {
         if (c[4] == c[8]) {
